@@ -63,7 +63,7 @@ public class PlaneGenerator : EditorWindow {
 		}
 
 		for (int i = 0; i < height*width - width - 1; i++) {
-			if (i % width != 0) {
+			if ((i+1) % width != 0) {
 				triangles.Add (i);
 				triangles.Add (i + 1);
 				triangles.Add (i + width);

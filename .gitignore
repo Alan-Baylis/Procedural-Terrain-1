@@ -4,3 +4,7 @@ Assembly-CSharp-Editor.csproj
 Library/*
 
 obj/*
+
+Temp/*
+
+Assembly-CSharp.csproj
