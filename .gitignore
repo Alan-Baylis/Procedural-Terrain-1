@@ -1,4 +1,6 @@
 
 Assembly-CSharp-Editor.csproj
 
-Library/AnnotationManager
+Library/*
+
+obj/*
