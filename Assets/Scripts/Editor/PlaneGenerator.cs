@@ -82,6 +82,7 @@ public class PlaneGenerator : EditorWindow {
 		planeMesh.SetUVs (3, uvs);
 
 		planeMesh.SetTriangles (triangles, 0);
+		planeMesh.RecalculateNormals ();
 
 		plane.AddComponent<MeshFilter> ();
 		plane.GetComponent<MeshFilter> ().mesh = planeMesh;
