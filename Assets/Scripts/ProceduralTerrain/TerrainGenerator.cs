@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -26,11 +27,15 @@ public class TerrainGenerator : MonoBehaviour {
 
 	public List<PerlinTerrainLevel> m_DetailLevels;
 
+	public bool m_UseVertexColors;
+	public Gradient m_VertexColors;
+
 	[HideInInspector]
 	public int width, height;
 
 	private Mesh m_Terrain;
 	private List<Vector3> m_Verts;
+	private List<Color> m_VertColors;
 
 	void Start()
 	{
@@ -46,7 +51,7 @@ public class TerrainGenerator : MonoBehaviour {
 	{
 		m_Terrain = GetComponent<MeshFilter> ().sharedMesh;
 		m_Verts = new List<Vector3> (width * height);
-
+		m_VertColors = new List<Color> (width * height);
 		m_Init = true;
 	}
 		
@@ -98,9 +103,12 @@ public class TerrainGenerator : MonoBehaviour {
 					}
 				}
 			}
-
+				
 			m_Terrain.SetVertices (m_Verts);
 			m_Terrain.RecalculateNormals ();
+
+			if (m_UseVertexColors)
+				SetVertColors ();
 		}
 	}
 
@@ -122,5 +130,16 @@ public class TerrainGenerator : MonoBehaviour {
 			m_Terrain.SetVertices (m_Verts);
 			m_Terrain.RecalculateNormals ();
 		}
+	}
+
+	private void SetVertColors()
+	{
+		m_VertColors.Clear ();
+
+		for (int i = 0; i < width*height; i++) {
+				m_VertColors.Add(m_VertexColors.Evaluate ((m_Verts [i].y + m_Scale) / (2 * m_Scale)));
+		}
+			
+		m_Terrain.SetColors (m_VertColors);
 	}
 }
