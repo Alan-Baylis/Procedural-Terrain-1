@@ -7,10 +7,7 @@ public class PlaneGenerator : EditorWindow {
 
 	private int width;
 	private int height;
-	private bool applyPerlinNoise;
-	private float perlinScale;
-	private float perlinFrequency;
-	private float perlinSeed;
+	private bool addTerrainGenerator;
 	private Material mat;
 
 	[MenuItem("Custom/Plane Generator")]
@@ -26,10 +23,7 @@ public class PlaneGenerator : EditorWindow {
 		width = EditorGUILayout.IntField ("Width", width);
 		height = EditorGUILayout.IntField ("Height", height);
 		mat = (Material)EditorGUILayout.ObjectField ("Material", mat, typeof(Material));
-		applyPerlinNoise = EditorGUILayout.Toggle ("Apply Perlin Noise", applyPerlinNoise);
-		perlinScale = EditorGUILayout.FloatField ("Perlin Height Scale", perlinScale);
-		perlinFrequency = EditorGUILayout.FloatField ("Perlin Frequency", perlinFrequency);
-		perlinSeed = EditorGUILayout.FloatField ("Perlin Seed", perlinSeed);
+		addTerrainGenerator = EditorGUILayout.Toggle ("Add Terrain Generator", addTerrainGenerator);
 			
 		if (GUILayout.Button ("Generate"))
 			GeneratePlane ();
@@ -52,14 +46,8 @@ public class PlaneGenerator : EditorWindow {
 
 		for (float i = 0; i < height; i++) {
 			for (float j = 0; j < width; j++) {
-
-				if (applyPerlinNoise)
-					vertHeight = (2 * Mathf.PerlinNoise ((j/(float)width) * perlinFrequency + perlinSeed,
-						(i/(float)height) * perlinFrequency + perlinSeed) - 1) * perlinScale;
-				else
-					vertHeight = 0.0f;
-				
-				verts.Add (new Vector3 (i, vertHeight, j));
+							
+				verts.Add (new Vector3 (i, 0, j));
 				uvs.Add (new Vector3 (i / (float)height, j / (float)width));
 				normals.Add (Vector3.up);
 			}
@@ -85,12 +73,17 @@ public class PlaneGenerator : EditorWindow {
 		planeMesh.SetUVs (3, uvs);
 
 		planeMesh.SetTriangles (triangles, 0);
-		planeMesh.RecalculateNormals ();
 
 		plane.AddComponent<MeshFilter> ();
 		plane.GetComponent<MeshFilter> ().mesh = planeMesh;
 
 		plane.AddComponent<MeshRenderer> ();
+
+		if (addTerrainGenerator) {
+			plane.AddComponent<TerrainGenerator> ();
+			plane.GetComponent<TerrainGenerator> ().width = width;
+			plane.GetComponent<TerrainGenerator> ().height = height;
+		}
 
 		if(mat != null)
 			plane.GetComponent<MeshRenderer> ().material = mat;
