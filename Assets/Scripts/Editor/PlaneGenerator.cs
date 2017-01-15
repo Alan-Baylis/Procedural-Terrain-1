@@ -9,6 +9,7 @@ public class PlaneGenerator : EditorWindow {
 	private int height;
 	private bool applyPerlinNoise;
 	private float perlinScale;
+	private float perlinFrequency;
 	private float perlinSeed;
 	private Material mat;
 
@@ -27,6 +28,7 @@ public class PlaneGenerator : EditorWindow {
 		mat = (Material)EditorGUILayout.ObjectField ("Material", mat, typeof(Material));
 		applyPerlinNoise = EditorGUILayout.Toggle ("Apply Perlin Noise", applyPerlinNoise);
 		perlinScale = EditorGUILayout.FloatField ("Perlin Height Scale", perlinScale);
+		perlinFrequency = EditorGUILayout.FloatField ("Perlin Frequency", perlinFrequency);
 		perlinSeed = EditorGUILayout.FloatField ("Perlin Seed", perlinSeed);
 			
 		if (GUILayout.Button ("Generate"))
@@ -52,7 +54,8 @@ public class PlaneGenerator : EditorWindow {
 			for (float j = 0; j < width; j++) {
 
 				if (applyPerlinNoise)
-					vertHeight = (2 * Mathf.PerlinNoise (j/(float)width + perlinSeed, i/(float)height + perlinSeed) - 1) * perlinScale;
+					vertHeight = (2 * Mathf.PerlinNoise ((j/(float)width) * perlinFrequency + perlinSeed,
+						(i/(float)height) * perlinFrequency + perlinSeed) - 1) * perlinScale;
 				else
 					vertHeight = 0.0f;
 				
