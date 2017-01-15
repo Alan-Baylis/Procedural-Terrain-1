@@ -7,6 +7,7 @@ public class PlaneGenerator : EditorWindow {
 
 	private int width;
 	private int height;
+	private string planeName = "Plane";
 	private bool addTerrainGenerator;
 	private Material mat;
 
@@ -20,6 +21,7 @@ public class PlaneGenerator : EditorWindow {
 	{
 		GUILayout.BeginVertical ();
 	
+		planeName = EditorGUILayout.TextField ("Name", planeName);
 		width = EditorGUILayout.IntField ("Width", width);
 		height = EditorGUILayout.IntField ("Height", height);
 		mat = (Material)EditorGUILayout.ObjectField ("Material", mat, typeof(Material));
@@ -33,7 +35,7 @@ public class PlaneGenerator : EditorWindow {
 
 	private void GeneratePlane()
 	{
-		GameObject plane = new GameObject ("Plane");
+		GameObject plane = new GameObject (planeName);
 		Mesh planeMesh = new Mesh ();
 		planeMesh.name = "Plane";
 
@@ -41,8 +43,6 @@ public class PlaneGenerator : EditorWindow {
 		List<Vector3> normals = new List<Vector3>(width*height);
 		List<Vector2> uvs = new List<Vector2>(width*height);
 		List<int> triangles = new List<int> ();
-
-		float vertHeight = 0.0f;
 
 		for (float i = 0; i < height; i++) {
 			for (float j = 0; j < width; j++) {

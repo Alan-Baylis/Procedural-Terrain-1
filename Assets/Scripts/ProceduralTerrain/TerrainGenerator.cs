@@ -18,6 +18,12 @@ public class TerrainGenerator : MonoBehaviour {
 	};
 
 	public float m_Scale;	
+
+	public bool m_MakeIsland;
+
+	[Range(-1,1)]
+	public float m_IslandOffset = 0.0f;
+
 	public List<PerlinTerrainLevel> m_DetailLevels;
 
 	[HideInInspector]
@@ -77,6 +83,14 @@ public class TerrainGenerator : MonoBehaviour {
 						vertHeight *= m_Scale;
 						vertHeight /= Mathf.Pow (2, i);
 				
+						if (m_MakeIsland) {
+							float center = width / 2;
+							vertHeight = Mathf.Lerp (
+								vertHeight, 
+								-m_Scale/10, 
+								(Mathf.Abs (j - center) + Mathf.Abs (k - center))/width + m_IslandOffset);
+						}
+
 						if(i == 0)
 							m_Verts.Add (new Vector3 ((float)j, vertHeight, (float)k));
 						else
