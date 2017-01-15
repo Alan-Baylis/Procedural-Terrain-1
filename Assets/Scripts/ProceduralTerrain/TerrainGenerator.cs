@@ -8,10 +8,17 @@ public class TerrainGenerator : MonoBehaviour {
 
 	public bool m_ApplyPerlinNoise = false;
 	private bool m_Reset = true;
+	private bool m_Init = false;
 
-	public float m_Frequency;
-	public float m_Seed;
-	public float m_Scale;
+	[System.Serializable]
+	public struct PerlinTerrainLevel
+	{
+		public float frequency;
+		public float seed;
+	};
+
+	public float m_Scale;	
+	public List<PerlinTerrainLevel> m_DetailLevels;
 
 	[HideInInspector]
 	public int width, height;
@@ -33,6 +40,8 @@ public class TerrainGenerator : MonoBehaviour {
 	{
 		m_Terrain = GetComponent<MeshFilter> ().sharedMesh;
 		m_Verts = new List<Vector3> (width * height);
+
+		m_Init = true;
 	}
 		
 	void OnValidate()
@@ -48,25 +57,31 @@ public class TerrainGenerator : MonoBehaviour {
 
 	public void UpdateTerrain()
 	{
-		if (m_Terrain == null || m_Verts == null) {
+		if (!m_Init) {
 			Init ();
 		} 
 
-		if (m_Terrain != null && m_Verts != null) {
+		if (m_Init) {
 			float vertHeight = 0.0f;
 			m_Verts.Clear ();
 
-			for (float i = 0; i < height; i++) {
-				for (float j = 0; j < width; j++) {
+			for (int i = 0; i < m_DetailLevels.Count; i++) {
+				for (int j = 0; j < height; j++) {
+					for (int k = 0; k < width; k++) {
 
-					vertHeight = Mathf.PerlinNoise (
-						(j / (float)width) * m_Frequency + m_Seed,
-						(i / (float)height) * m_Frequency + m_Seed);
+						vertHeight = Mathf.PerlinNoise (
+							((float)k / (float)width) * m_DetailLevels [i].frequency + m_DetailLevels [i].seed,
+							((float)j / (float)height) * m_DetailLevels [i].frequency + m_DetailLevels [i].seed);
 
-					vertHeight = 2 * vertHeight - 1;
-					vertHeight *= m_Scale;
+						vertHeight = 2 * vertHeight - 1;
+						vertHeight *= m_Scale;
+						vertHeight /= Mathf.Pow (2, i);
 				
-					m_Verts.Add (new Vector3 (i, vertHeight, j));
+						if(i == 0)
+							m_Verts.Add (new Vector3 ((float)j, vertHeight, (float)k));
+						else
+							m_Verts [j * width + k] += new Vector3 (0, vertHeight, 0);
+					}
 				}
 			}
 
@@ -77,11 +92,11 @@ public class TerrainGenerator : MonoBehaviour {
 
 	public void ResetTerrain()
 	{
-		if (m_Terrain == null || m_Verts == null) {
+		if (!m_Init) {
 			Init ();
 		} 
 
-		if (m_Terrain != null && m_Verts != null) {
+		if (m_Init) {
 			m_Verts.Clear ();
 
 			for (float i = 0; i < height; i++) {
