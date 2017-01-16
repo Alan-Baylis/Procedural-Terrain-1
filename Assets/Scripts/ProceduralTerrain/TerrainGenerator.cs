@@ -30,6 +30,11 @@ public class TerrainGenerator : MonoBehaviour {
 	public bool m_UseVertexColors;
 	public Gradient m_VertexColors;
 
+	public bool m_EnableRandomVertColorOffset = false;
+
+	[Range(0,1)]
+	public float m_RandRange;
+
 	[HideInInspector]
 	public int width, height;
 
@@ -135,9 +140,12 @@ public class TerrainGenerator : MonoBehaviour {
 	private void SetVertColors()
 	{
 		m_VertColors.Clear ();
+		float randOffset = 0.0f;
 
 		for (int i = 0; i < width*height; i++) {
-				m_VertColors.Add(m_VertexColors.Evaluate ((m_Verts [i].y + m_Scale) / (2 * m_Scale)));
+			if(m_EnableRandomVertColorOffset)
+				randOffset = Random.Range (-m_RandRange, m_RandRange);
+			m_VertColors.Add(m_VertexColors.Evaluate ((m_Verts [i].y + m_Scale) / (2 * m_Scale) + randOffset));
 		}
 			
 		m_Terrain.SetColors (m_VertColors);
