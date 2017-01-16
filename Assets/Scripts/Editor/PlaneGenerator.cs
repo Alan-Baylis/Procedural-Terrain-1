@@ -44,11 +44,11 @@ public class PlaneGenerator : EditorWindow {
 		List<Vector2> uvs = new List<Vector2>(width*height);
 		List<int> triangles = new List<int> ();
 
-		for (float i = 0; i < height; i++) {
-			for (float j = 0; j < width; j++) {
+		for (float i = 0.0f; i < height; i++) {
+			for (float j = 0.0f; j < width; j++) {
 							
 				verts.Add (new Vector3 (i, 0, j));
-				uvs.Add (new Vector3 (i / (float)height, j / (float)width));
+				uvs.Add (new Vector2 (i / (float)(height), j / (float)(width)));
 				normals.Add (Vector3.up);
 			}
 		}
@@ -59,9 +59,9 @@ public class PlaneGenerator : EditorWindow {
 				triangles.Add (i + 1);
 				triangles.Add (i + width);
 
+				triangles.Add (i + width);
 				triangles.Add (i + 1);
 				triangles.Add (i + 1 + width);
-				triangles.Add (i + width);
 			}
 		}
 

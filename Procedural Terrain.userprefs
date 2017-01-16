@@ -1,14 +1,16 @@
-﻿<Properties StartupItem="Assembly-CSharp-Editor.csproj">
+﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Editor/PlaneGenerator.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Helper/MeshTriangleVisualizer.cs">
     <Files>
-      <File FileName="Assets/Scripts/Editor/PlaneGenerator.cs" Line="30" Column="69" />
+      <File FileName="Assets/Scripts/Helper/NormalVisualizer.cs" Line="22" Column="1" />
+      <File FileName="Assets/Scripts/Editor/PlaneGenerator.cs" Line="63" Column="24" />
+      <File FileName="Assets/Scripts/ProceduralTerrain/TerrainGenerator.cs" Line="138" Column="3" />
+      <File FileName="Assets/Scripts/Helper/MeshTriangleVisualizer.cs" Line="14" Column="19" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="/Users/rtracey/Documents/CS/Unity/Procedural Terrain/Assets/Scripts/Editor/PlaneGenerator.cs" line="55" column="1" />
-      <Breakpoint file="/Users/rtracey/Documents/CS/Unity/Procedural Terrain/Assets/Scripts/Editor/PlaneGenerator.cs" line="59" column="1" />
+      <Breakpoint file="/Users/rtracey/Documents/CS/Unity/Procedural Terrain/Assets/Scripts/ProceduralTerrain/TerrainGenerator.cs" line="140" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
